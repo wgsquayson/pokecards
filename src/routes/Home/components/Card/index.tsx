@@ -1,5 +1,6 @@
 import { Dimensions, Image, View } from "react-native";
 import Animated, {
+  interpolateColor,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -105,6 +106,15 @@ export default function Card({ pokemon, onSaveToDeck, onDismiss }: CardProps) {
 
   const animatedStyles = useAnimatedStyle(() => {
     return {
+      backgroundColor: interpolateColor(
+        offset.value.x,
+        [-horizontalLimit, 0, horizontalLimit],
+        [
+          styles.theme.color.interactive.danger,
+          styles.theme.color.interactive.primary,
+          styles.theme.color.interactive.positive,
+        ]
+      ),
       transform: [
         { translateX: offset.value.x },
         { translateY: offset.value.y },

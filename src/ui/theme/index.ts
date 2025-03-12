@@ -3,6 +3,8 @@ const defaultColorPalette = {
   frost: "#F4F8FF",
   darkerFrost: "#e6e9f7",
   gray: "#979CA0",
+  green: "#3DA65A",
+  red: "#a63d3d",
 };
 
 export const theme = {
@@ -19,6 +21,8 @@ export const theme = {
     },
     interactive: {
       primary: defaultColorPalette.darkerFrost,
+      positive: defaultColorPalette.green,
+      danger: defaultColorPalette.red,
     },
     border: {
       inactive: defaultColorPalette.gray,
