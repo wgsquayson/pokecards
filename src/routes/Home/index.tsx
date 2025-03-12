@@ -1,3 +1,5 @@
+import Template from "./template";
+
 export default function Home() {
-  return null;
+  return <Template />;
 }
