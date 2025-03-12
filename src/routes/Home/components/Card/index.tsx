@@ -13,6 +13,10 @@ import { Text } from "@ui/components";
 import { CardProps } from "./model";
 import ProgressCircle from "../ProgressCircle";
 
+const IMAGE_SIZE = 170;
+const X_MAX_OFFSET = 1000;
+const Z_MAX_OFFSET = 15;
+
 export default function Card({ pokemon, onSaveToDeck, onDismiss }: CardProps) {
   const styles = useStyle((theme) => ({
     container: {
@@ -27,8 +31,8 @@ export default function Card({ pokemon, onSaveToDeck, onDismiss }: CardProps) {
       borderColor: theme.color.border.inactive,
     },
     image: {
-      width: 170,
-      height: 170,
+      width: IMAGE_SIZE,
+      height: IMAGE_SIZE,
     },
     progressCircle: {
       position: "absolute",
@@ -49,8 +53,8 @@ export default function Card({ pokemon, onSaveToDeck, onDismiss }: CardProps) {
     })
     .onUpdate((e) => {
       function getZ() {
-        if (e.translationX > 50) return 15;
-        if (e.translationX < -50) return -15;
+        if (e.translationX > 50) return Z_MAX_OFFSET;
+        if (e.translationX < -50) return -Z_MAX_OFFSET;
         return 0;
       }
 
@@ -62,25 +66,25 @@ export default function Card({ pokemon, onSaveToDeck, onDismiss }: CardProps) {
     })
     .onEnd((e) => {
       if (e.translationX >= horizontalLimit) {
-        offset.value = withSpring({
-          x: 1000,
-          y: 0,
-          z: 15,
-        });
-
         onSaveToDeck();
+
+        offset.value = withSpring({
+          x: X_MAX_OFFSET,
+          y: 0,
+          z: Z_MAX_OFFSET,
+        });
 
         return;
       }
 
       if (e.translationX <= -horizontalLimit) {
-        offset.value = withSpring({
-          x: -1000,
-          y: 0,
-          z: -15,
-        });
-
         onDismiss();
+
+        offset.value = withSpring({
+          x: -X_MAX_OFFSET,
+          y: 0,
+          z: -Z_MAX_OFFSET,
+        });
 
         return;
       }
