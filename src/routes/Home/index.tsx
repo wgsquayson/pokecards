@@ -13,12 +13,12 @@ export default function Home() {
     setPokemons((prev) => [prev[1], newPokemon]);
   }
 
-  async function handleSaveToDeck(pokemon: Pokemon) {
-    await getNewPokemon();
+  function handleSaveToDeck(pokemon: Pokemon) {
+    getNewPokemon();
   }
 
-  async function handleDismiss() {
-    await getNewPokemon();
+  function handleDismiss() {
+    getNewPokemon();
   }
 
   useEffect(() => {
