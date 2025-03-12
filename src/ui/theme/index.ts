@@ -20,6 +20,10 @@ export const theme = {
     interactive: {
       primary: defaultColorPalette.darkerFrost,
     },
+    border: {
+      inactive: defaultColorPalette.gray,
+      active: defaultColorPalette.black,
+    },
   },
   spacing: {
     xxxs: 4,
