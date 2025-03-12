@@ -52,10 +52,13 @@ export default function ProgressCircle({ progress = 0 }: ProgressCircleProps) {
   path.addCircle(SIZE / 2, SIZE / 2, radius);
 
   useEffect(() => {
-    currentProgress.value = withTiming(progress / MAX_PROGRESS, {
-      duration: 1000,
-    });
-  }, []);
+    currentProgress.value = withTiming(
+      progress / MAX_PROGRESS > 1 ? MAX_PROGRESS : progress / MAX_PROGRESS,
+      {
+        duration: 1000,
+      }
+    );
+  }, [progress]);
 
   return (
     <View style={styles.container}>
