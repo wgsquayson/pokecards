@@ -4,6 +4,10 @@ export type TemplateProps = {
   pokemons: Pokemon[];
   onSaveToDeck: (pokemon: Pokemon) => void;
   onDismiss: () => void;
+  loading: boolean;
+  loadingMore: boolean;
+  hasError: boolean;
+  refetch: () => void;
 };
 
 export type PokemonResponse = {

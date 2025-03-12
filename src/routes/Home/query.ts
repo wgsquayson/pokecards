@@ -18,23 +18,12 @@ function shapePokemon(pokemon: PokemonResponse): Pokemon {
   };
 }
 
-export async function getInitialPokemons(): Promise<Pokemon[]> {
-  const pokemons = await Promise.all([
-    fetchJson<PokemonResponse>(`${baseUrl}/1`),
-    fetchJson<PokemonResponse>(`${baseUrl}/2`),
-    fetchJson<PokemonResponse>(`${baseUrl}/3`),
-  ]);
+export async function getPokemons(lastPokemonId: number): Promise<Pokemon[]> {
+  const pokemons = await Promise.all(
+    Array.from({ length: 10 }).map((_, index) =>
+      fetchJson<PokemonResponse>(`${baseUrl}/${lastPokemonId + index + 1}`)
+    )
+  );
 
   return pokemons.map(shapePokemon);
-}
-
-export async function getPokemon(id: number): Promise<Pokemon> {
-  const pokemon = await fetchJson<PokemonResponse>(`${baseUrl}/${id}`);
-
-  return {
-    id: pokemon.id,
-    name: pokemon.name,
-    experience: pokemon.base_experience,
-    imageUri: pokemon.sprites.front_default,
-  };
 }

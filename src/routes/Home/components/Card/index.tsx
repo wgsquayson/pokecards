@@ -57,7 +57,6 @@ export default function Card({
   const gesture = Gesture.Pan()
     .onUpdate((e) => {
       if (index !== 0) return;
-
       translateX.value = e.translationX;
     })
     .onEnd((e) => {

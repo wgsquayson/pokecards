@@ -1,50 +1,75 @@
 import { useEffect, useState } from "react";
 
 import Template from "./template";
-import { getInitialPokemons, getPokemon } from "./query";
+import { getPokemons } from "./query";
 
 import { Pokemon } from "@models/pokemon";
 import { useDeckStore } from "@stores/deck";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-  const { addToDeck } = useDeckStore();
+  const [hasError, setHasError] = useState(false);
 
-  async function getNewPokemon() {
-    const newPokemon = await getPokemon(pokemons[2].id + 1);
-    setPokemons((prev) => [prev[1], prev[2], newPokemon]);
-  }
+  const { addToDeck, resetDeck } = useDeckStore();
 
-  function handleSaveToDeck(pokemon: Pokemon) {
-    addToDeck(pokemon);
-    getNewPokemon();
-  }
+  async function getPokemonList(isLoadingMore?: boolean) {
+    const lastPokemonId = pokemons[pokemons.length - 1]?.id
+      ? pokemons[pokemons.length - 1].id
+      : 0;
 
-  function handleDismiss() {
-    getNewPokemon();
-  }
-
-  async function initialFetch() {
     try {
-      const initialPokemons = await getInitialPokemons();
-      setPokemons(initialPokemons);
-    } catch (error) {
-      console.log(error);
+      const result = await getPokemons(lastPokemonId);
+      setPokemons((prev) => prev.concat(result));
+    } catch {
+      setHasError(true);
     } finally {
+      if (isLoadingMore) setLoadingMore(false);
       setLoading(false);
     }
   }
 
+  function reorganizePokemonList() {
+    setPokemons((prev) => {
+      const updatedList = [...prev];
+      updatedList.shift();
+
+      if (updatedList.length <= 3) {
+        setLoadingMore(true);
+        getPokemonList(true);
+      }
+
+      return updatedList;
+    });
+  }
+
+  function handleSaveToDeck(pokemon: Pokemon) {
+    addToDeck(pokemon);
+    reorganizePokemonList();
+  }
+
+  async function refetch() {
+    setHasError(false);
+    setLoading(true);
+
+    resetDeck();
+    await getPokemonList();
+  }
+
   useEffect(() => {
-    initialFetch();
+    getPokemonList();
   }, []);
 
   return (
     <Template
+      loadingMore={loadingMore}
+      loading={loading}
       pokemons={pokemons}
       onSaveToDeck={handleSaveToDeck}
-      onDismiss={handleDismiss}
+      onDismiss={reorganizePokemonList}
+      hasError={hasError}
+      refetch={refetch}
     />
   );
 }
