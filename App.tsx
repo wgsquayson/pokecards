@@ -1,5 +1,11 @@
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
 import Navigation from "./src/routes";
 
 export default function App() {
-  return <Navigation />;
+  return (
+    <GestureHandlerRootView>
+      <Navigation />
+    </GestureHandlerRootView>
+  );
 }
