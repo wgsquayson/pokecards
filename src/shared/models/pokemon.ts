@@ -1,5 +1,6 @@
 export type Pokemon = {
+  id: number;
   name: string;
-  imageSrc: string;
-  experience: string;
+  imageUri: string;
+  experience: number;
 };

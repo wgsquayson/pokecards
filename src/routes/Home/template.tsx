@@ -22,7 +22,21 @@ export default function () {
     <Layout header={{ title: "PokéCards" }}>
       <View style={styles.container}>
         <Text variant="highlight">Choose your Pokémons!</Text>
-        <Card />
+        <Card
+          pokemon={{
+            id: 3,
+            name: "Venusaur",
+            imageUri:
+              "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png",
+            experience: 263,
+          }}
+          onDismiss={() => {
+            console.log("onDismiss");
+          }}
+          onSaveToDeck={() => {
+            console.log("onSave");
+          }}
+        />
         <View style={styles.instructions}>
           <Text variant="detail">Swipe right to add to your deck</Text>
           <Text variant="detail">Swipe left to dismiss</Text>
