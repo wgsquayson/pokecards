@@ -8,21 +8,14 @@ import { CardProps } from "./model";
 export default function Card({ pokemon }: CardProps) {
   const styles = useStyle((theme) => ({
     container: {
-      width: "80%",
       backgroundColor: theme.color.interactive.primary,
       padding: theme.spacing.md,
       alignItems: "center",
       borderRadius: theme.borderRadius.xl,
     },
     image: {
-      width: 250,
-      height: 250,
-    },
-    content: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      width: "100%",
+      width: 200,
+      height: 200,
     },
   }));
 
@@ -34,10 +27,8 @@ export default function Card({ pokemon }: CardProps) {
         }}
         style={styles.image}
       />
-      <View style={styles.content}>
-        <Text variant="heading">Bulbassaur</Text>
-        <View />
-      </View>
+
+      <Text variant="heading">Bulbassaur</Text>
     </View>
   );
 }
