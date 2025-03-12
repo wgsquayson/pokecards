@@ -40,7 +40,7 @@ function Layout({ header, children, loading = false }: LayoutProps) {
 
   return (
     <>
-      <SafeAreaView style={styles.safeArea}>
+      <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
         {header ? (
           <View style={styles.header}>
             {header.icon}

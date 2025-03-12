@@ -1,14 +1,41 @@
+import Animated, { LinearTransition } from "react-native-reanimated";
+import { View } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { Layout } from "@ui/components";
+import { Layout, Text } from "@ui/components";
+import { useStyle } from "@ui/hooks";
 
-export default function () {
+import { TemplateProps } from "./model";
+import PokemonListItem from "./PokemonListItem";
+
+export default function ({ pokemons, onRemove }: TemplateProps) {
+  const styles = useStyle((theme) => ({
+    spacer: {
+      height: theme.spacing.xxs,
+    },
+  }));
+
   return (
     <Layout
       header={{
         title: "My Deck",
         icon: <MaterialCommunityIcons name="cards" size={24} />,
       }}
-    ></Layout>
+    >
+      <Animated.FlatList
+        data={pokemons}
+        keyExtractor={(item) => String(item.id)}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <Text>No pokémons yet. Save some to yout deck!</Text>
+        }
+        ItemSeparatorComponent={() => <View style={styles.spacer} />}
+        ListFooterComponent={<View style={styles.spacer} />}
+        itemLayoutAnimation={LinearTransition.duration(200)}
+        renderItem={({ item }) => (
+          <PokemonListItem pokemon={item} onRemove={() => onRemove(item.id)} />
+        )}
+      />
+    </Layout>
   );
 }
