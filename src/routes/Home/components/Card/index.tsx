@@ -23,6 +23,8 @@ export default function Card({ pokemon, onSaveToDeck, onDismiss }: CardProps) {
       borderRadius: theme.borderRadius.xl,
       width: Dimensions.get("window").width / 1.6,
       height: 250,
+      borderWidth: 1,
+      borderColor: theme.color.border.inactive,
     },
     image: {
       width: 170,
@@ -46,10 +48,16 @@ export default function Card({ pokemon, onSaveToDeck, onDismiss }: CardProps) {
       isPressed.value = true;
     })
     .onUpdate((e) => {
+      function getZ() {
+        if (e.translationX > 50) return 15;
+        if (e.translationX < -50) return -15;
+        return 0;
+      }
+
       offset.value = {
         x: e.translationX + start.value.x,
         y: 0,
-        z: e.translationX > 0 ? 15 : -15,
+        z: getZ(),
       };
     })
     .onEnd((e) => {
