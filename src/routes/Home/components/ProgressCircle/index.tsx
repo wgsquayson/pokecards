@@ -15,7 +15,11 @@ import { useStyle } from "@ui/hooks";
 import { Text } from "@ui/components";
 
 import { ProgressCircleProps } from "./model";
-import { MAX_PROGRESS, SIZE, STROKE_WIDTH } from "./constants";
+
+const SIZE = 60;
+const STROKE_WIDTH = 7;
+const MAX_PROGRESS = 563;
+const ANIMATION_DURATION = 1000;
 
 export default function ProgressCircle({ progress = 0 }: ProgressCircleProps) {
   const currentProgress = useSharedValue(0);
@@ -53,9 +57,9 @@ export default function ProgressCircle({ progress = 0 }: ProgressCircleProps) {
 
   useEffect(() => {
     currentProgress.value = withTiming(
-      progress / MAX_PROGRESS > 1 ? MAX_PROGRESS : progress / MAX_PROGRESS,
+      progress / MAX_PROGRESS >= 1 ? MAX_PROGRESS : progress / MAX_PROGRESS,
       {
-        duration: 1000,
+        duration: ANIMATION_DURATION,
       }
     );
   }, [progress]);
