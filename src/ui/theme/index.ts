@@ -13,6 +13,7 @@ export const theme = {
       primary: defaultColorPalette.black,
       secondary: defaultColorPalette.frost,
       inactive: defaultColorPalette.gray,
+      negative: defaultColorPalette.red,
     },
     layout: {
       background: {
