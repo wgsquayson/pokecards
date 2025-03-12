@@ -12,4 +12,5 @@ export const useDeckStore = create<DeckState>()((set) => ({
     set((prev) => ({
       pokemons: prev.pokemons.filter((pokemon) => pokemon.id !== pokemonId),
     })),
+  resetDeck: () => set(() => ({ pokemons: [] })),
 }));
