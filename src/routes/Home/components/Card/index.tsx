@@ -41,7 +41,7 @@ export default function Card({ pokemon, onSaveToDeck, onDismiss }: CardProps) {
   const offset = useSharedValue({ x: 0, y: 0, z: 0 });
   const start = useSharedValue({ x: 0, y: 0, z: 0 });
 
-  const horizontalLimit = Math.floor(Dimensions.get("window").width / 2.2);
+  const horizontalLimit = Math.floor(Dimensions.get("window").width / 2);
 
   const gesture = Gesture.Pan()
     .onBegin(() => {
@@ -74,14 +74,11 @@ export default function Card({ pokemon, onSaveToDeck, onDismiss }: CardProps) {
       }
 
       if (e.translationX <= -horizontalLimit) {
-        offset.value = withTiming(
-          {
-            x: -1000,
-            y: 0,
-            z: -15,
-          },
-          { duration: 500 }
-        );
+        offset.value = withSpring({
+          x: -1000,
+          y: 0,
+          z: -15,
+        });
 
         onDismiss();
 
