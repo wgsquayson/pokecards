@@ -3,16 +3,30 @@ import {
   StaticParamList,
 } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons/";
 
 import Home from "./Home";
 import Deck from "./Deck";
 
 const RootStack = createBottomTabNavigator({
   screens: {
-    Home,
+    Home: {
+      screen: Home,
+      name: "Home",
+      options: {
+        tabBarIcon: () => (
+          <MaterialIcons name="catching-pokemon" size={20} color="black" />
+        ),
+      },
+    },
     Deck: {
       screen: Deck,
       name: "My Deck",
+      options: {
+        tabBarIcon: () => (
+          <MaterialCommunityIcons name="cards" size={20} color="black" />
+        ),
+      },
     },
   },
   screenOptions: {
