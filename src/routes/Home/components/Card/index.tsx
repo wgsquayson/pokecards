@@ -12,11 +12,14 @@ export default function Card({ pokemon }: CardProps) {
       backgroundColor: theme.color.interactive.primary,
       padding: theme.spacing.md,
       alignItems: "center",
+      justifyContent: "center",
       borderRadius: theme.borderRadius.xl,
+      width: "60%",
+      height: 250,
     },
     image: {
-      width: 200,
-      height: 200,
+      width: 170,
+      height: 170,
     },
     progressCircle: {
       position: "absolute",
