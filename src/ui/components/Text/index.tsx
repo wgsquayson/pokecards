@@ -22,7 +22,7 @@ function Text({
     },
     heading: {
       color,
-      fontSize: theme.fontSizes.xxl,
+      fontSize: theme.fontSizes.lg,
       fontWeight: 900,
     },
     highlight: {
