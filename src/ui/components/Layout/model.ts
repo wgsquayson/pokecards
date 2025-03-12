@@ -1,7 +1,8 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, ReactElement } from "react";
 
 export type LayoutProps = PropsWithChildren & {
-  header?: {
+  header: {
+    icon: ReactElement;
     title: string;
   };
   loading?: boolean;

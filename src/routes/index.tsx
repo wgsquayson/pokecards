@@ -14,18 +14,14 @@ const RootStack = createBottomTabNavigator({
       screen: Home,
       name: "Home",
       options: {
-        tabBarIcon: () => (
-          <MaterialIcons name="catching-pokemon" size={20} color="black" />
-        ),
+        tabBarIcon: () => <MaterialIcons name="catching-pokemon" size={20} />,
       },
     },
     Deck: {
       screen: Deck,
       name: "My Deck",
       options: {
-        tabBarIcon: () => (
-          <MaterialCommunityIcons name="cards" size={20} color="black" />
-        ),
+        tabBarIcon: () => <MaterialCommunityIcons name="cards" size={20} />,
       },
     },
   },

@@ -16,7 +16,8 @@ function Layout({ header, children, loading = false }: LayoutProps) {
     header: {
       paddingBottom: theme.spacing.sml,
       flexDirection: "row",
-      gap: theme.spacing.sml,
+      gap: theme.spacing.xs,
+      alignItems: "center",
     },
     loadingContainer: {
       flex: 1,
@@ -42,6 +43,7 @@ function Layout({ header, children, loading = false }: LayoutProps) {
       <SafeAreaView style={styles.safeArea}>
         {header ? (
           <View style={styles.header}>
+            {header.icon}
             <Text variant="heading">{header.title}</Text>
           </View>
         ) : null}

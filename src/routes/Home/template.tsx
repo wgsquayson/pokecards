@@ -1,3 +1,4 @@
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { View } from "react-native";
 
 import { Layout, Text } from "@ui/components";
@@ -25,7 +26,12 @@ export default function ({
   }));
 
   return (
-    <Layout header={{ title: "PokéCards" }}>
+    <Layout
+      header={{
+        title: "PokéCards",
+        icon: <MaterialIcons name="catching-pokemon" size={24} />,
+      }}
+    >
       <View style={styles.container}>
         <Text variant="highlight">Choose your Pokémons!</Text>
         {pokemons.map((pokemon, index) => (
