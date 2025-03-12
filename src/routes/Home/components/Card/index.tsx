@@ -101,7 +101,6 @@ export default function Card({ pokemon, onSaveToDeck, onDismiss }: CardProps) {
     .onFinalize(() => {
       isPressed.value = false;
     })
-    .failOffsetX([-horizontalLimit, horizontalLimit])
     .runOnJS(true);
 
   const animatedStyles = useAnimatedStyle(() => {
