@@ -1,5 +1,6 @@
-import { Dimensions, Image, View } from "react-native";
+import { Dimensions, Image, useWindowDimensions, View } from "react-native";
 import Animated, {
+  interpolate,
   interpolateColor,
   useAnimatedStyle,
   useSharedValue,
@@ -15,10 +16,17 @@ import { CardProps } from "./model";
 import ProgressCircle from "../ProgressCircle";
 
 const IMAGE_SIZE = 170;
-const X_MAX_OFFSET = 1000;
 const Z_MAX_OFFSET = 15;
+const HORIZONTAL_SWIPE_LIMIT = 180;
 
-export default function Card({ pokemon, onSaveToDeck, onDismiss }: CardProps) {
+export default function Card({
+  pokemon,
+  index,
+  onSaveToDeck,
+  onDismiss,
+}: CardProps) {
+  const { width } = useWindowDimensions();
+
   const styles = useStyle((theme) => ({
     container: {
       backgroundColor: theme.color.interactive.primary,
@@ -26,10 +34,12 @@ export default function Card({ pokemon, onSaveToDeck, onDismiss }: CardProps) {
       alignItems: "center",
       justifyContent: "center",
       borderRadius: theme.borderRadius.xl,
-      width: Dimensions.get("window").width / 1.6,
+      width: width / 1.6,
       height: 250,
       borderWidth: 1,
       borderColor: theme.color.border.inactive,
+      position: "absolute",
+      zIndex: -index,
     },
     image: {
       width: IMAGE_SIZE,
@@ -42,73 +52,46 @@ export default function Card({ pokemon, onSaveToDeck, onDismiss }: CardProps) {
     },
   }));
 
-  const isPressed = useSharedValue(false);
-  const offset = useSharedValue({ x: 0, y: 0, z: 0 });
-  const start = useSharedValue({ x: 0, y: 0, z: 0 });
-
-  const horizontalLimit = Math.floor(Dimensions.get("window").width / 2);
+  const translateX = useSharedValue(0);
 
   const gesture = Gesture.Pan()
-    .onBegin(() => {
-      isPressed.value = true;
-    })
     .onUpdate((e) => {
-      function getZ() {
-        if (e.translationX > 50) return Z_MAX_OFFSET;
-        if (e.translationX < -50) return -Z_MAX_OFFSET;
-        return 0;
-      }
+      if (index !== 0) return;
 
-      offset.value = {
-        x: e.translationX + start.value.x,
-        y: 0,
-        z: getZ(),
-      };
+      translateX.value = e.translationX;
     })
     .onEnd((e) => {
-      if (e.translationX >= horizontalLimit) {
+      if (index !== 0) return;
+
+      if (e.translationX >= HORIZONTAL_SWIPE_LIMIT) {
         onSaveToDeck();
-
-        offset.value = withSpring({
-          x: X_MAX_OFFSET,
-          y: 0,
-          z: Z_MAX_OFFSET,
-        });
-
+        translateX.value = withSpring(width);
         return;
       }
 
-      if (e.translationX <= -horizontalLimit) {
+      if (e.translationX <= -HORIZONTAL_SWIPE_LIMIT) {
         onDismiss();
-
-        offset.value = withSpring({
-          x: -X_MAX_OFFSET,
-          y: 0,
-          z: -Z_MAX_OFFSET,
-        });
-
+        translateX.value = withSpring(-width);
         return;
       }
 
-      offset.value = withTiming(
-        {
-          x: 0,
-          y: 0,
-          z: 0,
-        },
-        { duration: 500 }
-      );
-    })
-    .onFinalize(() => {
-      isPressed.value = false;
+      translateX.value = withTiming(0, { duration: 500 });
     })
     .runOnJS(true);
 
   const animatedStyles = useAnimatedStyle(() => {
+    const swipeDirection = translateX.value > 0 ? 1 : -1;
+
+    const rotateZ = interpolate(
+      Math.abs(translateX.value),
+      [0, width],
+      [0, Z_MAX_OFFSET]
+    );
+
     return {
       backgroundColor: interpolateColor(
-        offset.value.x,
-        [-horizontalLimit, 0, horizontalLimit],
+        translateX.value,
+        [-HORIZONTAL_SWIPE_LIMIT, 0, HORIZONTAL_SWIPE_LIMIT],
         [
           styles.theme.color.interactive.danger,
           styles.theme.color.interactive.primary,
@@ -116,10 +99,10 @@ export default function Card({ pokemon, onSaveToDeck, onDismiss }: CardProps) {
         ]
       ),
       transform: [
-        { translateX: offset.value.x },
-        { translateY: offset.value.y },
-        { rotateZ: withSpring(`${offset.value.z}deg`) },
-        { scale: withSpring(isPressed.value ? 1.1 : 1) },
+        { translateX: translateX.value },
+        { translateY: withTiming(index * -60) },
+        { scale: withTiming(1 - index * 0.1) },
+        { rotateZ: withSpring(`${rotateZ * swipeDirection}deg`) },
       ],
     };
   });

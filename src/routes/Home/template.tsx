@@ -22,7 +22,7 @@ export default function ({
     instructions: {
       alignItems: "center",
     },
-    card: { position: "absolute" },
+    card: { alignItems: "center" },
   }));
 
   return (
@@ -33,17 +33,24 @@ export default function ({
       }}
     >
       <View style={styles.container}>
-        <Text variant="highlight">Choose your Pokémons!</Text>
         {pokemons.map((pokemon, index) => (
-          <View style={[styles.card, { zIndex: -index }]} key={pokemon.id}>
+          <View style={styles.card} key={pokemon.id}>
             <Card
+              index={index}
               pokemon={pokemon}
               onSaveToDeck={() => onSaveToDeck(pokemon)}
               onDismiss={onDismiss}
             />
           </View>
         ))}
-        <View style={{ height: 250 }} />
+        <View
+          style={{
+            height: 200,
+            width: "70%",
+            zIndex: -3,
+          }}
+        />
+        <Text variant="highlight">Choose your Pokémons!</Text>
         <View style={styles.instructions}>
           <Text variant="detail">Swipe right to add to your deck</Text>
           <Text variant="detail">Swipe left to dismiss</Text>

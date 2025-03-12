@@ -9,26 +9,23 @@ async function fetchJson<T>(url: string): Promise<T> {
   return response.json();
 }
 
+function shapePokemon(pokemon: PokemonResponse): Pokemon {
+  return {
+    id: pokemon.id,
+    name: pokemon.name,
+    experience: pokemon.base_experience,
+    imageUri: pokemon.sprites.front_default,
+  };
+}
+
 export async function getInitialPokemons(): Promise<Pokemon[]> {
-  const [firstPokemon, secondPokemon] = await Promise.all([
+  const pokemons = await Promise.all([
     fetchJson<PokemonResponse>(`${baseUrl}/1`),
     fetchJson<PokemonResponse>(`${baseUrl}/2`),
+    fetchJson<PokemonResponse>(`${baseUrl}/3`),
   ]);
 
-  return [
-    {
-      id: firstPokemon.id,
-      name: firstPokemon.name,
-      experience: firstPokemon.base_experience,
-      imageUri: firstPokemon.sprites.front_default,
-    },
-    {
-      id: secondPokemon.id,
-      name: secondPokemon.name,
-      experience: secondPokemon.base_experience,
-      imageUri: secondPokemon.sprites.front_default,
-    },
-  ];
+  return pokemons.map(shapePokemon);
 }
 
 export async function getPokemon(id: number): Promise<Pokemon> {
