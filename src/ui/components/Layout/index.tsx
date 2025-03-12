@@ -26,18 +26,6 @@ function Layout({ header, children, loading = false }: LayoutProps) {
     },
   }));
 
-  if (loading)
-    return (
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator
-            size="large"
-            color={styles.theme.color.text.primary}
-          />
-        </View>
-      </SafeAreaView>
-    );
-
   return (
     <>
       <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
@@ -47,7 +35,16 @@ function Layout({ header, children, loading = false }: LayoutProps) {
             <Text variant="heading">{header.title}</Text>
           </View>
         ) : null}
-        {children}
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator
+              size="large"
+              color={styles.theme.color.text.primary}
+            />
+          </View>
+        ) : (
+          children
+        )}
       </SafeAreaView>
     </>
   );
