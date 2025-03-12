@@ -2,15 +2,18 @@ import {
   createStaticNavigation,
   StaticParamList,
 } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import Home from "./Home";
-import FavoritePokemons from "./FavoritePokemons";
+import Deck from "./Deck";
 
-const RootStack = createNativeStackNavigator({
+const RootStack = createBottomTabNavigator({
   screens: {
     Home,
-    FavoritePokemons,
+    Deck: {
+      screen: Deck,
+      name: "My Deck",
+    },
   },
   screenOptions: {
     headerShown: false,
@@ -22,7 +25,6 @@ const Navigation = createStaticNavigation(RootStack);
 export default Navigation;
 
 type RootStackParamList = StaticParamList<typeof RootStack>;
-
 declare global {
   namespace ReactNavigation {
     interface RootParamList extends RootStackParamList {}
