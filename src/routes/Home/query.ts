@@ -1,4 +1,4 @@
-import { Pokemon } from "@shared/models/pokemon";
+import { Pokemon } from "@models/pokemon";
 import { PokemonResponse } from "./model";
 
 const baseUrl = "https://pokeapi.co/api/v2/pokemon";

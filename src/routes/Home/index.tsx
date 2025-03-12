@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import Template from "./template";
-import { Pokemon } from "@shared/models/pokemon";
+import { Pokemon } from "@models/pokemon";
 import { getInitialPokemons, getPokemon } from "./query";
 
 export default function Home() {
