@@ -9,19 +9,19 @@ import { useDeckStore } from "@stores/deck";
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [hasError, setHasError] = useState(false);
+
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [lastFetchedPokemonId, setLastFetchedPokemonId] = useState(0);
 
   const { addToDeck } = useDeckStore();
 
   async function getPokemonList() {
-    const lastPokemonId = pokemons[pokemons.length - 1]?.id
-      ? pokemons[pokemons.length - 1].id
-      : 0;
-
     try {
-      const result = await getPokemons(lastPokemonId);
+      const result = await getPokemons(lastFetchedPokemonId);
+
       setPokemons((prev) => prev.concat(result));
+      setLastFetchedPokemonId(result[result.length - 1].id);
     } catch {
       setHasError(true);
     } finally {
