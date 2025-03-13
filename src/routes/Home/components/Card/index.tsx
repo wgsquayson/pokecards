@@ -132,7 +132,10 @@ export default function Card({
     <GestureDetector gesture={gesture}>
       <Animated.View style={[styles.container, animatedStyles]}>
         <View style={styles.progressCircle}>
-          <ProgressCircle progress={pokemon.experience} />
+          <ProgressCircle
+            progress={pokemon.experience}
+            startAnimation={index === 0}
+          />
         </View>
         <Image
           source={{

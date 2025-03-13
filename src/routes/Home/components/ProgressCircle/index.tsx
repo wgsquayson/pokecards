@@ -21,7 +21,10 @@ const STROKE_WIDTH = 7;
 const MAX_PROGRESS = 563;
 const ANIMATION_DURATION = 1000;
 
-export default function ProgressCircle({ progress = 0 }: ProgressCircleProps) {
+export default function ProgressCircle({
+  progress = 0,
+  startAnimation = false,
+}: ProgressCircleProps) {
   const currentProgress = useSharedValue(0);
 
   const styles = useStyle(() => ({
@@ -56,13 +59,15 @@ export default function ProgressCircle({ progress = 0 }: ProgressCircleProps) {
   path.addCircle(SIZE / 2, SIZE / 2, radius);
 
   useEffect(() => {
-    currentProgress.value = withTiming(
-      progress / MAX_PROGRESS >= 1 ? MAX_PROGRESS : progress / MAX_PROGRESS,
-      {
-        duration: ANIMATION_DURATION,
-      }
-    );
-  }, [progress]);
+    if (startAnimation) {
+      currentProgress.value = withTiming(
+        progress / MAX_PROGRESS >= 1 ? MAX_PROGRESS : progress / MAX_PROGRESS,
+        {
+          duration: ANIMATION_DURATION,
+        }
+      );
+    }
+  }, [progress, startAnimation]);
 
   return (
     <View style={styles.container}>
