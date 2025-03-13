@@ -18,9 +18,9 @@ import ProgressCircle from "../ProgressCircle";
 
 const IMAGE_SIZE = 170;
 const Z_MAX_OFFSET = 15;
-const HORIZONTAL_SWIPE_LIMIT = 180;
+const HORIZONTAL_SWIPE_TRIGGER = 140;
 const ANIMATION_DURATION = 200;
-const SCALE_DURATION = 500;
+const SCALE_ANIMATION_DURATION = 500;
 
 export default function Card({
   pokemon,
@@ -65,7 +65,7 @@ export default function Card({
     .onEnd((e) => {
       if (index !== 0) return;
 
-      if (e.translationX >= HORIZONTAL_SWIPE_LIMIT) {
+      if (e.translationX >= HORIZONTAL_SWIPE_TRIGGER) {
         translateX.value = withTiming(
           width,
           { duration: ANIMATION_DURATION },
@@ -79,7 +79,7 @@ export default function Card({
         return;
       }
 
-      if (e.translationX <= -HORIZONTAL_SWIPE_LIMIT) {
+      if (e.translationX <= -HORIZONTAL_SWIPE_TRIGGER) {
         translateX.value = withTiming(
           -width,
           { duration: ANIMATION_DURATION },
@@ -110,7 +110,7 @@ export default function Card({
     return {
       backgroundColor: interpolateColor(
         translateX.value,
-        [-HORIZONTAL_SWIPE_LIMIT, 0, HORIZONTAL_SWIPE_LIMIT],
+        [-HORIZONTAL_SWIPE_TRIGGER, 0, HORIZONTAL_SWIPE_TRIGGER],
         [
           styles.theme.color.interactive.danger,
           styles.theme.color.interactive.primary,
@@ -120,9 +120,11 @@ export default function Card({
       transform: [
         { translateX: translateX.value },
         {
-          translateY: withTiming(translateY, { duration: SCALE_DURATION }),
+          translateY: withTiming(translateY, {
+            duration: SCALE_ANIMATION_DURATION,
+          }),
         },
-        { scale: withTiming(scale, { duration: SCALE_DURATION }) },
+        { scale: withTiming(scale, { duration: SCALE_ANIMATION_DURATION }) },
         { rotateZ: withSpring(`${rotateZ * swipeDirection}deg`) },
       ],
     };
