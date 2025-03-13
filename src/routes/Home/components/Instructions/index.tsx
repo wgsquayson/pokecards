@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 import { Text } from "@ui/components";
 import { useStyle } from "@ui/hooks";
@@ -10,7 +10,7 @@ export default function Instructions({
   hasError,
   refetch,
 }: InstructionsProps) {
-  const styles = useStyle((theme) => ({
+  const styles = useStyle(() => ({
     instructions: { alignItems: "center" },
   }));
 
