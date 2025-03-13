@@ -8,5 +8,5 @@ Obs: the command `yarn <command>` can be done with your preferred package manage
 
 - Clone this repository
 - On the root folder, run `yarn` to install dependencies
-- Run `yarn prebuild` to generate `android` and `ios` native code
+- Run `yarn prebuild` to generate `android` and `ios` native code and install ios pods
 - Run `yarn android` or `yarn ios` to run the app on your desired device
