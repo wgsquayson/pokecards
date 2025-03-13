@@ -1,7 +1,8 @@
-import { Dimensions, Image, useWindowDimensions, View } from "react-native";
+import { Image, useWindowDimensions, View } from "react-native";
 import Animated, {
   interpolate,
   interpolateColor,
+  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -63,14 +64,30 @@ export default function Card({
       if (index !== 0) return;
 
       if (e.translationX >= HORIZONTAL_SWIPE_LIMIT) {
-        onSaveToDeck();
-        translateX.value = withSpring(width);
+        translateX.value = withTiming(
+          width,
+          { duration: 200 },
+          (isFinished) => {
+            if (isFinished) {
+              runOnJS(onSaveToDeck)();
+            }
+          }
+        );
+
         return;
       }
 
       if (e.translationX <= -HORIZONTAL_SWIPE_LIMIT) {
-        onDismiss();
-        translateX.value = withSpring(-width);
+        translateX.value = withTiming(
+          -width,
+          { duration: 200 },
+          (isFinished) => {
+            if (isFinished) {
+              runOnJS(onDismiss)();
+            }
+          }
+        );
+
         return;
       }
 
@@ -99,7 +116,7 @@ export default function Card({
       ),
       transform: [
         { translateX: translateX.value },
-        { translateY: withTiming(index * -60) },
+        { translateY: withTiming(index * -55) },
         { scale: withTiming(1 - index * 0.1) },
         { rotateZ: withSpring(`${rotateZ * swipeDirection}deg`) },
       ],
