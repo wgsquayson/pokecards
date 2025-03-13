@@ -27,7 +27,7 @@ export default function ({ pokemons, onRemove }: TemplateProps) {
         keyExtractor={(item) => String(item.id)}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          <Text>No pokémons yet. Save some to yout deck!</Text>
+          <Text>No pokémons here yet. Save some to your deck!</Text>
         }
         ItemSeparatorComponent={() => <View style={styles.spacer} />}
         ListFooterComponent={<View style={styles.spacer} />}
