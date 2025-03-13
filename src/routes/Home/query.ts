@@ -29,9 +29,9 @@ function shapePokemon(pokemon: PokemonResponse): Pokemon {
 
 export async function getPokemons(lastPokemonId: number): Promise<Pokemon[]> {
   const pokemonPromises = Array.from({ length: FETCH_LIMIT }).map((_, index) =>
-    fetchJson<PokemonResponse>(`${baseUrl}/${lastPokemonId + index + 1}`)
-      .then((pokemon) => (pokemon ? shapePokemon(pokemon) : null))
-      .catch(() => null)
+    fetchJson<PokemonResponse>(`${baseUrl}/${lastPokemonId + index + 1}`).then(
+      (pokemon) => (pokemon ? shapePokemon(pokemon) : null)
+    )
   );
 
   const pokemons = await Promise.all(pokemonPromises);
