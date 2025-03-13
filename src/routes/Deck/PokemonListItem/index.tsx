@@ -1,5 +1,10 @@
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { Image, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import Animated, {
   runOnJS,
   SlideOutRight,
@@ -19,6 +24,8 @@ export default function PokemonListItem({
   pokemon,
   onRemove,
 }: PokemonListItemProps) {
+  const { width } = useWindowDimensions();
+
   const styles = useStyle((theme) => ({
     container: {
       flexDirection: "row",
@@ -46,7 +53,7 @@ export default function PokemonListItem({
   }));
 
   function slideOut() {
-    translateX.value = withTiming(1000, { duration: 200 }, (isFinished) => {
+    translateX.value = withTiming(width, { duration: 200 }, (isFinished) => {
       if (isFinished) {
         runOnJS(onRemove)();
       }
