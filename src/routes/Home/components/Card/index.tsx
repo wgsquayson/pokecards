@@ -18,8 +18,9 @@ import ProgressCircle from "../ProgressCircle";
 
 const IMAGE_SIZE = 170;
 const Z_MAX_OFFSET = 15;
-const HORIZONTAL_SWIPE_LIMIT = 150;
+const HORIZONTAL_SWIPE_LIMIT = 180;
 const ANIMATION_DURATION = 200;
+const SCALE_DURATION = 500;
 
 export default function Card({
   pokemon,
@@ -93,8 +94,7 @@ export default function Card({
       }
 
       translateX.value = withTiming(0, { duration: ANIMATION_DURATION });
-    })
-    .runOnJS(true);
+    });
 
   const animatedStyles = useAnimatedStyle(() => {
     const swipeDirection = translateX.value > 0 ? 1 : -1;
@@ -104,6 +104,8 @@ export default function Card({
       [0, width],
       [0, Z_MAX_OFFSET]
     );
+    const translateY = interpolate(index, [0, 1, 2], [0, -25, -50]);
+    const scale = interpolate(index, [0, 1, 2], [1, 0.9, 0.8]);
 
     return {
       backgroundColor: interpolateColor(
@@ -118,11 +120,9 @@ export default function Card({
       transform: [
         { translateX: translateX.value },
         {
-          translateY: withTiming(index * -55, { duration: ANIMATION_DURATION }),
+          translateY: withTiming(translateY, { duration: SCALE_DURATION }),
         },
-        {
-          scale: withTiming(1 - index * 0.1, { duration: ANIMATION_DURATION }),
-        },
+        { scale: withTiming(scale, { duration: SCALE_DURATION }) },
         { rotateZ: withSpring(`${rotateZ * swipeDirection}deg`) },
       ],
     };

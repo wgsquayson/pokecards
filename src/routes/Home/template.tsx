@@ -21,10 +21,16 @@ export default function ({
       flex: 1,
       alignItems: "center",
       justifyContent: "center",
-      gap: theme.spacing.lg,
+      gap: theme.spacing.sml,
     },
     instructions: { alignItems: "center" },
-    card: { alignItems: "center" },
+    cardsContainer: {
+      width: "100%",
+      alignItems: "center",
+      justifyContent: "center",
+      height: "40%",
+      zIndex: -4,
+    },
     cardsPlaceholder: { height: 120 },
     feedbackContainer: {
       height: 30,
@@ -63,17 +69,17 @@ export default function ({
       loading={loading}
     >
       <View style={styles.container}>
-        {pokemons.slice(0, 3).map((pokemon, index) => (
-          <View style={styles.card} key={pokemon.id}>
+        <View style={styles.cardsContainer}>
+          {pokemons.slice(0, 3).map((pokemon, index) => (
             <Card
               index={index}
               pokemon={pokemon}
               onSaveToDeck={() => onSaveToDeck(pokemon)}
               onDismiss={onDismiss}
+              key={pokemon.id}
             />
-          </View>
-        ))}
-        <View style={styles.cardsPlaceholder} />
+          ))}
+        </View>
         <View style={styles.feedbackContainer}>
           {loadingMore ? <Text variant="detail">Loading...</Text> : null}
         </View>
