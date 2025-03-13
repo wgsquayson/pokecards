@@ -17,7 +17,7 @@ import { Text } from "@ui/components";
 import { ProgressCircleProps } from "./model";
 
 const SIZE = 60;
-const STROKE_WIDTH = 7;
+const STROKE_WIDTH = 6;
 const MAX_PROGRESS = 563;
 
 const origin: AnimatedProp<SkPoint> = {
@@ -29,7 +29,7 @@ const transform: AnimatedProp<Transforms3d> = [
     rotate: -Math.PI / 2,
   },
 ];
-const radius = SIZE / 2 - STROKE_WIDTH / 2;
+const radius = SIZE / 2 - STROKE_WIDTH;
 const path = Skia.Path.Make();
 path.addCircle(SIZE / 2, SIZE / 2, radius);
 
