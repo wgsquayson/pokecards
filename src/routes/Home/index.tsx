@@ -12,9 +12,9 @@ export default function Home() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [hasError, setHasError] = useState(false);
 
-  const { addToDeck, resetDeck } = useDeckStore();
+  const { addToDeck } = useDeckStore();
 
-  async function getPokemonList(isLoadingMore?: boolean) {
+  async function getPokemonList() {
     const lastPokemonId = pokemons[pokemons.length - 1]?.id
       ? pokemons[pokemons.length - 1].id
       : 0;
@@ -25,7 +25,7 @@ export default function Home() {
     } catch {
       setHasError(true);
     } finally {
-      if (isLoadingMore) setLoadingMore(false);
+      setLoadingMore(false);
       setLoading(false);
     }
   }
@@ -37,7 +37,7 @@ export default function Home() {
 
       if (updatedList.length <= 3) {
         setLoadingMore(true);
-        getPokemonList(true);
+        getPokemonList();
       }
 
       return updatedList;
@@ -50,10 +50,9 @@ export default function Home() {
   }
 
   async function refetch() {
-    setHasError(false);
     setLoading(true);
+    setHasError(false);
 
-    resetDeck();
     await getPokemonList();
   }
 
