@@ -1,4 +1,4 @@
-import { TextProps as RNTextProps } from "react-native";
+import { TextProps as RNTextProps, TextStyle } from "react-native";
 
 export type TextVariant =
   | "default"
@@ -10,4 +10,5 @@ export type TextVariant =
 export type TextProps = RNTextProps & {
   variant?: TextVariant;
   color?: string;
+  textAlign?: TextStyle["textAlign"];
 };

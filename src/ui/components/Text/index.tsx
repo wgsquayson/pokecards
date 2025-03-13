@@ -7,6 +7,7 @@ function Text({
   variant = "default",
   color = "#141414",
   children,
+  textAlign,
   ...props
 }: TextProps) {
   const styles = useStyle((theme) => ({
@@ -38,7 +39,7 @@ function Text({
   }));
 
   return (
-    <RNText {...props} style={[styles[variant]]}>
+    <RNText {...props} style={[styles[variant], { textAlign }]}>
       {children}
     </RNText>
   );
