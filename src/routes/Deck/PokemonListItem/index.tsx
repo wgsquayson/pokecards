@@ -1,17 +1,5 @@
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import {
-  Image,
-  TouchableOpacity,
-  useWindowDimensions,
-  View,
-} from "react-native";
-import Animated, {
-  runOnJS,
-  SlideOutRight,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
+import { Image, TouchableOpacity, View } from "react-native";
 
 import { useStyle } from "@ui/hooks";
 import { Text } from "@ui/components";
@@ -24,8 +12,6 @@ export default function PokemonListItem({
   pokemon,
   onRemove,
 }: PokemonListItemProps) {
-  const { width } = useWindowDimensions();
-
   const styles = useStyle((theme) => ({
     container: {
       flexDirection: "row",
@@ -46,33 +32,19 @@ export default function PokemonListItem({
     },
   }));
 
-  const translateX = useSharedValue(0);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }],
-  }));
-
-  function slideOut() {
-    translateX.value = withTiming(width, { duration: 200 }, (isFinished) => {
-      if (isFinished) {
-        runOnJS(onRemove)();
-      }
-    });
-  }
-
   return (
-    <Animated.View style={[styles.container, animatedStyle]}>
+    <View style={styles.container}>
       <View style={styles.content}>
         <Image style={styles.image} source={{ uri: pokemon.imageUri }} />
         <Text variant="bold">{pokemon.name}</Text>
       </View>
-      <TouchableOpacity hitSlop={styles.theme.spacing.xs} onPress={slideOut}>
+      <TouchableOpacity hitSlop={styles.theme.spacing.xs} onPress={onRemove}>
         <MaterialCommunityIcons
           name="trash-can-outline"
           size={24}
           color={styles.theme.color.interactive.danger}
         />
       </TouchableOpacity>
-    </Animated.View>
+    </View>
   );
 }

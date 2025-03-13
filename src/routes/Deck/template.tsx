@@ -1,6 +1,6 @@
-import Animated, { LinearTransition } from "react-native-reanimated";
-import { View } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { FlashList } from "@shopify/flash-list";
+import { View } from "react-native";
 
 import { Layout, Text } from "@ui/components";
 import { useStyle } from "@ui/hooks";
@@ -22,7 +22,7 @@ export default function ({ pokemons, onRemove }: TemplateProps) {
         icon: <MaterialCommunityIcons name="cards" size={24} />,
       }}
     >
-      <Animated.FlatList
+      <FlashList
         data={pokemons}
         keyExtractor={(item) => String(item.id)}
         showsVerticalScrollIndicator={false}
@@ -31,7 +31,7 @@ export default function ({ pokemons, onRemove }: TemplateProps) {
         }
         ItemSeparatorComponent={() => <View style={styles.spacer} />}
         ListFooterComponent={<View style={styles.spacer} />}
-        itemLayoutAnimation={LinearTransition.duration(200)}
+        estimatedItemSize={65}
         renderItem={({ item }) => (
           <PokemonListItem pokemon={item} onRemove={() => onRemove(item.id)} />
         )}
