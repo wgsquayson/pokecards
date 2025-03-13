@@ -13,6 +13,7 @@ export default function Home() {
 
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [lastFetchedPokemonId, setLastFetchedPokemonId] = useState(0);
+  const [isLastBatch, setIsLastBatch] = useState(false);
 
   const { addToDeck } = useDeckStore();
 
@@ -20,8 +21,13 @@ export default function Home() {
     try {
       const result = await getPokemons(lastFetchedPokemonId);
 
-      setPokemons((prev) => prev.concat(result));
-      setLastFetchedPokemonId(result[result.length - 1].id);
+      if (result.length > 0) {
+        setPokemons((prev) => [...prev, ...result]);
+        setLastFetchedPokemonId(result[result.length - 1].id);
+        return;
+      }
+
+      setIsLastBatch(true);
     } catch {
       setHasError(true);
     } finally {
@@ -32,10 +38,9 @@ export default function Home() {
 
   function reorganizePokemonList() {
     setPokemons((prev) => {
-      const updatedList = [...prev];
-      updatedList.shift();
+      const updatedList = prev.slice(1);
 
-      if (updatedList.length <= 3) {
+      if (updatedList.length <= 3 && !isLastBatch) {
         setLoadingMore(true);
         getPokemonList();
       }

@@ -1,10 +1,19 @@
 import { Pokemon } from "@models/pokemon";
 import { PokemonResponse } from "./model";
 
+const FETCH_LIMIT = 10;
 const baseUrl = "https://pokeapi.co/api/v2/pokemon";
 
-async function fetchJson<T>(url: string): Promise<T> {
+async function fetchJson<T>(url: string): Promise<T | null> {
   const response = await fetch(url);
+
+  if (!response.ok) {
+    if (response.status === 404) {
+      return null;
+    }
+
+    throw new Error();
+  }
 
   return response.json();
 }
@@ -19,11 +28,13 @@ function shapePokemon(pokemon: PokemonResponse): Pokemon {
 }
 
 export async function getPokemons(lastPokemonId: number): Promise<Pokemon[]> {
-  const pokemons = await Promise.all(
-    Array.from({ length: 10 }).map((_, index) =>
-      fetchJson<PokemonResponse>(`${baseUrl}/${lastPokemonId + index + 1}`)
-    )
+  const pokemonPromises = Array.from({ length: FETCH_LIMIT }).map((_, index) =>
+    fetchJson<PokemonResponse>(`${baseUrl}/${lastPokemonId + index + 1}`)
+      .then((pokemon) => (pokemon ? shapePokemon(pokemon) : null))
+      .catch(() => null)
   );
 
-  return pokemons.map(shapePokemon);
+  const pokemons = await Promise.all(pokemonPromises);
+
+  return pokemons.filter((pokemon): pokemon is Pokemon => pokemon !== null);
 }
