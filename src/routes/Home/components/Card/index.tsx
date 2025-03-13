@@ -18,7 +18,7 @@ import ProgressCircle from "../ProgressCircle";
 
 const IMAGE_SIZE = 170;
 const Z_MAX_OFFSET = 15;
-const HORIZONTAL_SWIPE_LIMIT = 180;
+const HORIZONTAL_SWIPE_LIMIT = 150;
 const ANIMATION_DURATION = 200;
 
 export default function Card({
