@@ -1,11 +1,15 @@
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { StatusBar } from "expo-status-bar";
 
 import Navigation from "./src/routes";
 
 export default function App() {
   return (
-    <GestureHandlerRootView>
-      <Navigation />
-    </GestureHandlerRootView>
+    <>
+      <StatusBar style="dark" />
+      <GestureHandlerRootView>
+        <Navigation />
+      </GestureHandlerRootView>
+    </>
   );
 }
