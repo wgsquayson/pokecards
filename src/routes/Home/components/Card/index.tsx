@@ -19,6 +19,7 @@ import ProgressCircle from "../ProgressCircle";
 const IMAGE_SIZE = 170;
 const Z_MAX_OFFSET = 15;
 const HORIZONTAL_SWIPE_LIMIT = 180;
+const ANIMATION_DURATION = 200;
 
 export default function Card({
   pokemon,
@@ -66,7 +67,7 @@ export default function Card({
       if (e.translationX >= HORIZONTAL_SWIPE_LIMIT) {
         translateX.value = withTiming(
           width,
-          { duration: 200 },
+          { duration: ANIMATION_DURATION },
           (isFinished) => {
             if (isFinished) {
               runOnJS(onSaveToDeck)();
@@ -80,7 +81,7 @@ export default function Card({
       if (e.translationX <= -HORIZONTAL_SWIPE_LIMIT) {
         translateX.value = withTiming(
           -width,
-          { duration: 200 },
+          { duration: ANIMATION_DURATION },
           (isFinished) => {
             if (isFinished) {
               runOnJS(onDismiss)();
@@ -91,7 +92,7 @@ export default function Card({
         return;
       }
 
-      translateX.value = withTiming(0, { duration: 500 });
+      translateX.value = withTiming(0, { duration: ANIMATION_DURATION });
     })
     .runOnJS(true);
 
@@ -116,8 +117,12 @@ export default function Card({
       ),
       transform: [
         { translateX: translateX.value },
-        { translateY: withTiming(index * -55) },
-        { scale: withTiming(1 - index * 0.1) },
+        {
+          translateY: withTiming(index * -55, { duration: ANIMATION_DURATION }),
+        },
+        {
+          scale: withTiming(1 - index * 0.1, { duration: ANIMATION_DURATION }),
+        },
         { rotateZ: withSpring(`${rotateZ * swipeDirection}deg`) },
       ],
     };
